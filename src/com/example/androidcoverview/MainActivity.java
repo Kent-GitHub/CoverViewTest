@@ -102,7 +102,7 @@ public class MainActivity extends  BaseActivity{
 		switch (v.getId()) {
 		case R.id.btn_cover1:
 			cover(mListView);
-			mCoverView.btn_refresh.setOnClickListener(new OnClickListener() {
+			mCoverView.mButton.setOnClickListener(new OnClickListener() {
 				
 				@Override
 				public void onClick(View v) {
@@ -113,7 +113,7 @@ public class MainActivity extends  BaseActivity{
 			break;
 		case R.id.btn_cover2:
 			cover(getTextViewNum(setCoverTop),getTextViewNum(setCoverBottom),getTextViewNum(setCoverLeft),getTextViewNum(setCoverRight));
-			mCoverView.btn_refresh.setOnClickListener(new OnClickListener() {
+			mCoverView.mButton.setOnClickListener(new OnClickListener() {
 				
 				@Override
 				public void onClick(View v) {
