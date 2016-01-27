@@ -3,46 +3,21 @@
     android:id="@+id/root_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.androidcoverview.MainActivity"
-    android:orientation="vertical"
-    android:focusable="true"  
-   android:focusableInTouchMode="true" >
- 
-	<LinearLayout 
-	    android:layout_height="wrap_content"
-	    android:layout_width="match_parent"
-	    android:orientation="horizontal">
-	    <EditText android:id="@+id/set_cover_top"
-	        android:layout_height="wrap_content"
-	        android:layout_width="0dp"
-	        android:layout_weight="1"
-	        android:hint="Top"/>
-	    <EditText android:id="@+id/set_cover_bottom"
-	        android:layout_height="wrap_content"
-	        android:layout_width="0dp"
-	        android:layout_weight="1"
-	        android:hint="Bottom"/>
-	    <EditText android:id="@+id/set_cover_left"
-	        android:layout_height="wrap_content"
-	        android:layout_width="0dp"
-	        android:layout_weight="1"
-	        android:hint="Left"/>
-	    <EditText android:id="@+id/set_cover_right"
-	        android:layout_height="wrap_content"
-	        android:layout_width="0dp"
-	        android:layout_weight="1"
-	        android:hint="Right"/>
-	</LinearLayout>
-    <ListView 
-        android:id="@+id/listView"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_width="match_parent"/>
+    tools:context="com.example.androidcoverview.MainActivity" >
 
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+	
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -50,22 +25,50 @@
 
         <Button
             android:id="@+id/btn_cover1"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Cover1" />
+
         <Button
-            android:id="@+id/btn_cover2"
-            android:layout_width="wrap_content"
+            android:id="@+id/btn_secActy"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="Cover2" />
-        
+            android:text="SecActy" />
+
         <Button
             android:id="@+id/btn_unCover"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="UnCover" />
-        
-          
     </LinearLayout>
-
+    
+    <RadioGroup 
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="horizontal">
+        
+        <RadioButton 
+            android:id="@+id/radioButton1"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="Succeeded"/>
+        <RadioButton 
+            android:id="@+id/radioButton2"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="Failed"
+            android:checked="true"/>
+        <RadioButton 
+            android:id="@+id/radioButton3"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="No Datas"/>
+    </RadioGroup>
+    
 </LinearLayout>

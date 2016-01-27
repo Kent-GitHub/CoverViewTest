@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.CheckedChange;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.UiThread;
@@ -28,6 +29,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.BaseAdapter;
+import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -36,25 +38,38 @@ import android.widget.TextView;
 public class MainActivity extends  BaseActivity{
 	private List<String> mDatas;
 	private BaseAdapter mAdapter;
-	private int screenHeight;
-	private int screenWidth;
-	
-	private String tag="MainActivity";
 	
 	@ViewById(R.id.listView)
 	ListView mListView;
 	
-	@ViewById
-	TextView setCoverTop,setCoverBottom,setCoverLeft,setCoverRight;
+	private final int REFRESH_SUCCEED =1;
+	private final int REFRESH_FAILED=2;
+	private final int REFRESH_NO_DATAS=3;
+	
+	private int refresh_result = 2;
+	
+	@CheckedChange({R.id.radioButton1,R.id.radioButton2,R.id.radioButton3})
+	void onCheckChanged(CompoundButton button,boolean isChecked){
+		if (isChecked) {
+			switch (button.getId()) {
+			case R.id.radioButton1: 
+				refresh_result=REFRESH_SUCCEED; 
+				break;
+			case R.id.radioButton2: 
+				refresh_result=REFRESH_FAILED; 
+				break;
+			case R.id.radioButton3: 
+				refresh_result=REFRESH_NO_DATAS; 
+				break;
+			}
+		}
+	}
 	
 	@AfterViews
 	void afterViews() {
 		initDatas();
-		DisplayMetrics dm = new DisplayMetrics();       
-		getWindowManager().getDefaultDisplay().getMetrics(dm);       
-		screenWidth = dm.widthPixels;
-		screenHeight = dm.heightPixels; 
 		mListView.setAdapter(mAdapter);
+		
 		setOnTapRefreshListener(new OnTapRefreshListener() {
 			
 			@Override
@@ -62,8 +77,11 @@ public class MainActivity extends  BaseActivity{
 				refreshingDatas();
 			}
 		});
+		
+		cover(mListView);
+		refreshingDatas();
 	}
-
+	
 	private void initDatas() {
 		mDatas=new ArrayList<String>();
 		for (int i = 0; i < 61; i++) {
@@ -97,30 +115,15 @@ public class MainActivity extends  BaseActivity{
 		};
 	}
 
-	@Click({ R.id.btn_cover1,R.id.btn_cover2, R.id.btn_unCover})
+	@Click({ R.id.btn_cover1,R.id.btn_secActy, R.id.btn_unCover})
 	void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.btn_cover1:
 			cover(mListView);
-			mCoverView.mButton.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					refreshing();
-					refreshingDatas2();
-				}
-			});
+			refreshingDatas();
 			break;
-		case R.id.btn_cover2:
-			cover(getTextViewNum(setCoverTop),getTextViewNum(setCoverBottom),getTextViewNum(setCoverLeft),getTextViewNum(setCoverRight));
-			mCoverView.mButton.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					refreshing();
-					refreshingDatas2();
-				}
-			});
+		case R.id.btn_secActy:
+			TestActivity_.intent(this).start();
 			break;
 		case R.id.btn_unCover:
 			removeCover();
@@ -135,45 +138,23 @@ public class MainActivity extends  BaseActivity{
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		finished();
-	}
-	
-	@Background
-	void refreshingDatas2(){
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		failed();
+		refreshingFinish();
 	}
 	
 	
 	@UiThread
-	void failed(){
-		refreshFailed();
-	}
-	
-	@UiThread
-	void finished(){
-		refreshSucceeded();
-	}
-	
-	private int getTextViewNum(TextView tv){
-		int num=0;
-		try {
-			num=Integer.parseInt(tv.getText().toString());
-			return num;
-		} catch (Exception e) {
-			
+	void refreshingFinish(){
+		switch (refresh_result) {
+		case REFRESH_SUCCEED:
+			stateRefreshSucceeded();
+			break;
+		case REFRESH_FAILED:
+			stateRefreshFailed();
+			break;
+		case REFRESH_NO_DATAS:
+			stateRefreshNoDatas();
+			break;
 		}
-		switch (tv.getId()) {
-		case R.id.set_cover_bottom:
-			return screenHeight;
-		case R.id.set_cover_right:
-			return screenWidth;
-	}
-		return num;
 	}
 	
 }
