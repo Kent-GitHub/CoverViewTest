@@ -4,11 +4,68 @@
     android:layout_height="match_parent"
     android:orientation="horizontal" >
 	
-    <TextView 
+    <LinearLayout 
         android:layout_height="match_parent"
         android:layout_width="0dp"
         android:layout_weight="1"
-        android:background="#cdcdcd"/>
+        android:background="#cdcdcd"
+        android:orientation="vertical">
+        <Button 
+            android:id="@+id/testActy_showAll"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="Show All"/>
+        <TextView 
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="progressBar"/>
+        <EditText 
+            android:id="@+id/ed_progressbar"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:hint="progressBar"
+            android:maxLines="1"/>
+        <TextView 
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="imageView"/>
+        <EditText 
+            android:id="@+id/ed_imageview"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:hint="imageView"
+            android:maxLines="1"/>
+        <TextView 
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="textView"/>
+        <EditText 
+            android:id="@+id/ed_textview"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:hint="textView"
+            android:maxLines="1"/>
+        <TextView 
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="Button"/>
+        <EditText 
+            android:id="@+id/ed_button"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:hint="Button"
+            android:maxLines="1"/>
+        <Button 
+            android:id="@+id/testActy_order"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="Set Order"/>
+         <Button 
+            android:id="@+id/testActy_margins"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="Set Matgins"/>
+    </LinearLayout>
     <TextView 
         android:id="@+id/test_tv"
         android:layout_height="match_parent"

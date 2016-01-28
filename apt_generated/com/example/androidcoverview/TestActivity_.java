@@ -13,15 +13,19 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.ActivityCompat;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.TextView;
+import com.example.androidcoverview.R.id;
 import org.androidannotations.api.BackgroundExecutor;
 import org.androidannotations.api.builder.ActivityIntentBuilder;
 import org.androidannotations.api.view.HasViews;
+import org.androidannotations.api.view.OnViewChangedListener;
 import org.androidannotations.api.view.OnViewChangedNotifier;
 
 public final class TestActivity_
     extends TestActivity
-    implements HasViews
+    implements HasViews, OnViewChangedListener
 {
 
     private final OnViewChangedNotifier onViewChangedNotifier_ = new OnViewChangedNotifier();
@@ -36,6 +40,7 @@ public final class TestActivity_
     }
 
     private void init_(Bundle savedInstanceState) {
+        OnViewChangedNotifier.registerOnViewChangedListener(this);
     }
 
     @Override
@@ -66,6 +71,59 @@ public final class TestActivity_
 
     public static TestActivity_.IntentBuilder_ intent(android.support.v4.app.Fragment supportFragment) {
         return new TestActivity_.IntentBuilder_(supportFragment);
+    }
+
+    @Override
+    public void onViewChanged(HasViews hasViews) {
+        edProgressbar = ((TextView) hasViews.findViewById(id.ed_progressbar));
+        edButton = ((TextView) hasViews.findViewById(id.ed_button));
+        edImageview = ((TextView) hasViews.findViewById(id.ed_imageview));
+        edTextview = ((TextView) hasViews.findViewById(id.ed_textview));
+        {
+            View view = hasViews.findViewById(id.testActy_showAll);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        TestActivity_.this.onClick(view);
+                    }
+
+                }
+                );
+            }
+        }
+        {
+            View view = hasViews.findViewById(id.testActy_order);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        TestActivity_.this.onClick(view);
+                    }
+
+                }
+                );
+            }
+        }
+        {
+            View view = hasViews.findViewById(id.testActy_margins);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        TestActivity_.this.onClick(view);
+                    }
+
+                }
+                );
+            }
+        }
     }
 
     @Override

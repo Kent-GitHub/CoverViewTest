@@ -170,6 +170,21 @@ public final class MainActivity_
                 );
             }
         }
+        {
+            CompoundButton view = ((CompoundButton) hasViews.findViewById(id.radioButton4));
+            if (view!= null) {
+                view.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        MainActivity_.this.onCheckChanged(buttonView, isChecked);
+                    }
+
+                }
+                );
+            }
+        }
         afterViews();
     }
 

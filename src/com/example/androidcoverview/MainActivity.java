@@ -11,56 +11,43 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
-import com.example.coverviewlibrary.BaseActivity;
-
 import android.app.Activity;
-import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.BaseAdapter;
 import android.widget.CompoundButton;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.coverviewlibrary.CoverViewTool;
+import com.example.coverviewlibrary.CoverViewTool.OnTapRefreshListener;
+
 @EActivity(R.layout.activity_main)
-public class MainActivity extends  BaseActivity{
+public class MainActivity extends  Activity{
 	private List<String> mDatas;
 	private BaseAdapter mAdapter;
-	
+	private CoverViewTool mCoverViewTool;
 	@ViewById(R.id.listView)
 	ListView mListView;
 	
-	private final int REFRESH_SUCCEED =1;
-	private final int REFRESH_FAILED=2;
-	private final int REFRESH_NO_DATAS=3;
+	private int refresh_result = CoverViewTool.REFRESH_NetworkError;
 	
-	private int refresh_result = 2;
-	
-	@CheckedChange({R.id.radioButton1,R.id.radioButton2,R.id.radioButton3})
+	@CheckedChange({R.id.radioButton1,R.id.radioButton2,R.id.radioButton3,R.id.radioButton4})
 	void onCheckChanged(CompoundButton button,boolean isChecked){
 		if (isChecked) {
 			switch (button.getId()) {
 			case R.id.radioButton1: 
-				refresh_result=REFRESH_SUCCEED; 
+				refresh_result=CoverViewTool.REFRESH_Succeed; 
 				break;
 			case R.id.radioButton2: 
-				refresh_result=REFRESH_FAILED; 
+				refresh_result=CoverViewTool.REFRESH_NetworkError; 
 				break;
 			case R.id.radioButton3: 
-				refresh_result=REFRESH_NO_DATAS; 
+				refresh_result=CoverViewTool.REFRESH_NoDatas; 
 				break;
+			case R.id.radioButton4:
+				refresh_result=CoverViewTool.REFRESH_Crash;
 			}
 		}
 	}
@@ -68,9 +55,11 @@ public class MainActivity extends  BaseActivity{
 	@AfterViews
 	void afterViews() {
 		initDatas();
+		mCoverViewTool=new CoverViewTool(this);
+		
 		mListView.setAdapter(mAdapter);
 		
-		setOnTapRefreshListener(new OnTapRefreshListener() {
+		mCoverViewTool.setOnTapRefreshListener(new OnTapRefreshListener() {
 			
 			@Override
 			public void onTapRefresh() {
@@ -78,7 +67,7 @@ public class MainActivity extends  BaseActivity{
 			}
 		});
 		
-		cover(mListView);
+		mCoverViewTool.cover(mListView);
 		refreshingDatas();
 	}
 	
@@ -119,14 +108,14 @@ public class MainActivity extends  BaseActivity{
 	void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.btn_cover1:
-			cover(mListView);
+			mCoverViewTool.cover(mListView);
 			refreshingDatas();
 			break;
 		case R.id.btn_secActy:
 			TestActivity_.intent(this).start();
 			break;
 		case R.id.btn_unCover:
-			removeCover();
+			mCoverViewTool.removeCover(false);
 			break;
 		}
 	}
@@ -145,14 +134,17 @@ public class MainActivity extends  BaseActivity{
 	@UiThread
 	void refreshingFinish(){
 		switch (refresh_result) {
-		case REFRESH_SUCCEED:
-			stateRefreshSucceeded();
+		case CoverViewTool.REFRESH_Succeed:
+			mCoverViewTool.stateRefreshSucceeded();
 			break;
-		case REFRESH_FAILED:
-			stateRefreshFailed();
+		case CoverViewTool.REFRESH_NetworkError:
+			mCoverViewTool.stateRefreshFailed(CoverViewTool.REFRESH_NetworkError);
 			break;
-		case REFRESH_NO_DATAS:
-			stateRefreshNoDatas();
+		case CoverViewTool.REFRESH_NoDatas:
+			mCoverViewTool.stateRefreshFailed(CoverViewTool.REFRESH_NoDatas);
+			break;
+		case CoverViewTool.REFRESH_Crash:
+			mCoverViewTool.stateRefreshFailed(CoverViewTool.REFRESH_Crash);
 			break;
 		}
 	}
