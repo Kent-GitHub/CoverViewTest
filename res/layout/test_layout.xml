@@ -24,7 +24,8 @@
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:hint="progressBar"
-            android:maxLines="1"/>
+            android:maxLines="1"
+            android:text="3"/>
         <TextView 
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
@@ -34,7 +35,8 @@
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:hint="imageView"
-            android:maxLines="1"/>
+            android:maxLines="1"
+            android:text="2"/>
         <TextView 
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
@@ -44,7 +46,8 @@
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:hint="textView"
-            android:maxLines="1"/>
+            android:maxLines="1"
+            android:text="1"/>/>
         <TextView 
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
@@ -54,7 +57,8 @@
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:hint="Button"
-            android:maxLines="1"/>
+            android:maxLines="1"
+            android:text="0"/>/>
         <Button 
             android:id="@+id/testActy_order"
             android:layout_height="wrap_content"

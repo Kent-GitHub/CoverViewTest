@@ -17,6 +17,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.TextView;
 import com.example.androidcoverview.R.id;
+import com.example.androidcoverview.R.layout;
 import org.androidannotations.api.BackgroundExecutor;
 import org.androidannotations.api.builder.ActivityIntentBuilder;
 import org.androidannotations.api.view.HasViews;
@@ -37,6 +38,7 @@ public final class TestActivity_
         init_(savedInstanceState);
         super.onCreate(savedInstanceState);
         OnViewChangedNotifier.replaceNotifier(previousNotifier);
+        setContentView(layout.test_layout);
     }
 
     private void init_(Bundle savedInstanceState) {
@@ -75,10 +77,11 @@ public final class TestActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
+        tv = ((TextView) hasViews.findViewById(id.test_tv));
         edProgressbar = ((TextView) hasViews.findViewById(id.ed_progressbar));
         edButton = ((TextView) hasViews.findViewById(id.ed_button));
-        edImageview = ((TextView) hasViews.findViewById(id.ed_imageview));
         edTextview = ((TextView) hasViews.findViewById(id.ed_textview));
+        edImageview = ((TextView) hasViews.findViewById(id.ed_imageview));
         {
             View view = hasViews.findViewById(id.testActy_showAll);
             if (view!= null) {
@@ -124,6 +127,7 @@ public final class TestActivity_
                 );
             }
         }
+        afterViews();
     }
 
     @Override

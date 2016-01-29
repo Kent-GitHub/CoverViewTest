@@ -20,34 +20,34 @@ import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.coverviewlibrary.CoverViewTool;
-import com.example.coverviewlibrary.CoverViewTool.OnTapRefreshListener;
+import com.example.coverviewlibrary.MCoverViewTool;
+import com.example.coverviewlibrary.MCoverViewTool.OnTapRefreshListener;
 
 @EActivity(R.layout.activity_main)
 public class MainActivity extends  Activity{
 	private List<String> mDatas;
 	private BaseAdapter mAdapter;
-	private CoverViewTool mCoverViewTool;
+	private MCoverViewTool mCoverViewTool;
 	@ViewById(R.id.listView)
 	ListView mListView;
 	
-	private int refresh_result = CoverViewTool.REFRESH_NetworkError;
+	private int refresh_result = MCoverViewTool.REFRESH_Network;
 	
 	@CheckedChange({R.id.radioButton1,R.id.radioButton2,R.id.radioButton3,R.id.radioButton4})
 	void onCheckChanged(CompoundButton button,boolean isChecked){
 		if (isChecked) {
 			switch (button.getId()) {
 			case R.id.radioButton1: 
-				refresh_result=CoverViewTool.REFRESH_Succeed; 
+				refresh_result=MCoverViewTool.REFRESH_Succeed; 
 				break;
 			case R.id.radioButton2: 
-				refresh_result=CoverViewTool.REFRESH_NetworkError; 
+				refresh_result=MCoverViewTool.REFRESH_Network; 
 				break;
 			case R.id.radioButton3: 
-				refresh_result=CoverViewTool.REFRESH_NoDatas; 
+				refresh_result=MCoverViewTool.REFRESH_Empty; 
 				break;
 			case R.id.radioButton4:
-				refresh_result=CoverViewTool.REFRESH_Crash;
+				refresh_result=MCoverViewTool.REFRESH_Error;
 			}
 		}
 	}
@@ -55,19 +55,16 @@ public class MainActivity extends  Activity{
 	@AfterViews
 	void afterViews() {
 		initDatas();
-		mCoverViewTool=new CoverViewTool(this);
-		
 		mListView.setAdapter(mAdapter);
-		
+		mCoverViewTool=new MCoverViewTool(this,mListView);
 		mCoverViewTool.setOnTapRefreshListener(new OnTapRefreshListener() {
 			
 			@Override
-			public void onTapRefresh() {
+			public void OnTapRefresh(int failedType) {
 				refreshingDatas();
+				mCoverViewTool.showLoading();
 			}
 		});
-		
-		mCoverViewTool.cover(mListView);
 		refreshingDatas();
 	}
 	
@@ -123,7 +120,7 @@ public class MainActivity extends  Activity{
 	@Background
 	void refreshingDatas(){
 		try {
-			Thread.sleep(2000);
+			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -134,17 +131,17 @@ public class MainActivity extends  Activity{
 	@UiThread
 	void refreshingFinish(){
 		switch (refresh_result) {
-		case CoverViewTool.REFRESH_Succeed:
-			mCoverViewTool.stateRefreshSucceeded();
+		case MCoverViewTool.REFRESH_Empty:
+			mCoverViewTool.showEmpty();
 			break;
-		case CoverViewTool.REFRESH_NetworkError:
-			mCoverViewTool.stateRefreshFailed(CoverViewTool.REFRESH_NetworkError);
+		case MCoverViewTool.REFRESH_Error:
+			mCoverViewTool.showError();
 			break;
-		case CoverViewTool.REFRESH_NoDatas:
-			mCoverViewTool.stateRefreshFailed(CoverViewTool.REFRESH_NoDatas);
+		case MCoverViewTool.REFRESH_Network:
+			mCoverViewTool.showNetWork();
 			break;
-		case CoverViewTool.REFRESH_Crash:
-			mCoverViewTool.stateRefreshFailed(CoverViewTool.REFRESH_Crash);
+		case MCoverViewTool.REFRESH_Succeed:
+			mCoverViewTool.showFinish();
 			break;
 		}
 	}
